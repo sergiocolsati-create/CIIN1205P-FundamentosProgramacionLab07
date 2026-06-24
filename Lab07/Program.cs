@@ -7,6 +7,7 @@ namespace Lab07
         static void Main(string[] args)
         {
             bool continuar = true;
+            Cobranzas.CargarFacturas();
 
             // El menu se repite mientras 'continuar' sea verdadero
             while (continuar)
@@ -69,7 +70,7 @@ namespace Lab07
                             Console.Write("Dias de plazo para el pago: ");
                             int dias = Convert.ToInt32(Console.ReadLine());
                             Cobranzas.RegistrarFactura(cliente, monto, "credito", dias);
-                            
+
                         }
                         else
                         {
@@ -80,9 +81,10 @@ namespace Lab07
                         Cobranzas.VerCobranzas();
                         break;
                     case "4":
-                        Cobranzas.RegistrarPago(); 
+                        Cobranzas.RegistrarPago();
                         break;
                     case "5":
+                        Cobranzas.GuardarFacturas();   // guardamos antes de cerrar
                         continuar = false;
                         Console.WriteLine("Saliendo del sistema...");
                         break;

@@ -128,6 +128,69 @@ namespace Lab07
                 Console.WriteLine("Numero de factura no valido.");
             }
         }
+        /// <summary>
+        /// Guarda todas las facturas en un archivo de texto (una linea por factura).
+        /// </summary>
+        public static void GuardarFacturas()
+        {
+            // Lista de texto donde acumularemos una linea por cada factura
+            List<string> lineas = new List<string>();
+
+            foreach (Factura f in facturas)
+            {
+                // Convertimos la factura en una linea con datos separados por ;
+                string linea =
+                    f.Cliente + ";" +
+                    f.Monto + ";" +
+                    f.TipoCliente + ";" +
+                    f.FechaEmision.ToString("yyyy-MM-dd") + ";" +
+                    f.DiasPlazo + ";" +
+                    f.Pagada;
+
+                lineas.Add(linea);
+                // TODO: agrega 'linea' a la lista 'lineas'
+                // Pista: es el mismo .Add(...) que usaste con las facturas
+            }
+
+            // Escribimos todas las lineas en el archivo facturas.txt
+            File.WriteAllLines("facturas.txt", lineas);
+
+            Console.WriteLine("Facturas guardadas en facturas.txt");
+        }
+
+        /// <summary>
+        /// Carga las facturas guardadas en el archivo de texto (si existe) a la lista.
+        /// </summary>
+        public static void CargarFacturas()
+        {
+            // Si el archivo no existe todavia, no hay nada que cargar
+            if (!File.Exists("facturas.txt"))
+            {
+                return;
+            }
+
+            // Leemos todas las lineas del archivo
+            string[] lineas = File.ReadAllLines("facturas.txt");
+
+            foreach (string linea in lineas)
+            {
+                // Partimos la linea en sus 6 datos usando el ;
+                string[] datos = linea.Split(';');
+
+                // Reconstruimos la factura a partir de los datos de texto
+                Factura f = new Factura();
+                f.Cliente = datos[0];
+                f.Monto = Convert.ToDouble(datos[1]);
+                f.TipoCliente = datos[2];
+                f.FechaEmision = DateTime.Parse(datos[3]);
+                f.DiasPlazo = Convert.ToInt32(datos[4]);
+                f.Pagada = bool.Parse(datos[5]);
+
+                facturas.Add(f);
+            }
+
+            Console.WriteLine("Facturas cargadas desde facturas.txt");
+        }
 
     }
 }
